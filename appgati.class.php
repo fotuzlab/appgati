@@ -47,7 +47,7 @@ class AppGati {
   public function Usage($format = 'array') {
   	// Return array by default.
     $data = '';
-    switch ($this>format) {
+    switch ($this->format) {
       case 'array':
         $data = getrusage();
         break;
