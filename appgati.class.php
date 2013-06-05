@@ -13,12 +13,21 @@
  * Class code.
  */
 class AppGati {
-
+  private $format;
   /**
    * Constructor.
    */
-  public function AppGati() {
+  public function AppGati($format='array') {
+      $this->format = $format;
     //parent::__construct();
+  }
+
+  /**
+   * set the format of the result to be returned
+   * @param  $format [description]
+   */
+  public function setFormat($format='array') {
+    $this->format = $format;
   }
 
   /**
@@ -37,13 +46,19 @@ class AppGati {
    */
   public function Usage($format = 'array') {
   	// Return array by default.
-  	if (!$format || $format == 'array') {
-  	  return getrusage();
-  	}
-  	// Return string  if specified.
-  	else if ($format == 'string') {
-  	  return str_replace('&', ', ', http_build_query(getrusage()));
-  	}
+    $data = '';
+    switch ($this>format) {
+      case 'array':
+        $data = getrusage();
+        break;
+      case 'string':
+        $data =  str_replace('&', ', ', http_build_query(getrusage()));
+        break;
+      case 'json':
+        $data = json_encode(getrusage());
+        break;
+    }
+    return $data;
   }
 
   /**
@@ -53,7 +68,7 @@ class AppGati {
     $label = $label ? $label . '_time' : 'SetTime';
     $this->$label = $this->Time();
   }
-  
+
   /**
    * Set usage by label..
    */
@@ -148,7 +163,7 @@ class AppGati {
       return $e;
     }
   }
-  
+
   /**
    * Get difference of arrays with keys intact.
    */
