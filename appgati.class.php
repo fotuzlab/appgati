@@ -24,7 +24,7 @@ class AppGati {
 
   /**
    * set the format of the result to be returned
-   * @param  $format [description]
+   * @param  string $format format string array,string or json
    */
   public function setFormat($format='array') {
     $this->format = $format;
