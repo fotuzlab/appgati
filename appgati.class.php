@@ -38,6 +38,21 @@ class AppGati {
   }
 
   /**
+   * Return memory usage.
+   */
+  public function Memory() {
+    // Not using true so to get actual memory usage.
+    return memory_get_usage();
+  }
+
+  /**
+   * Return average server load.
+   */
+  public function ServerLoad() {
+    return sys_getloadavg();
+  }
+
+  /**
    * Return usage.
    * @param
    *  $format: array or string.
@@ -70,11 +85,27 @@ class AppGati {
   }
 
   /**
-   * Set usage by label..
+   * Set usage by label.
    */
   protected function SetUsage($label = NULL, $format = NULL) {
     $label = $label ? $label . '_usage' : 'SetUsage';
     $this->$label = $this->Usage($format);
+  }
+
+  /**
+   * Set memory by label.
+   */
+  protected function SetMemory($label = NULL) {
+    $label = $label ? $label . '_memory' : 'SetMemory';
+    $this->$label = $this->Memory();
+  }
+
+  /**
+   * Get peak memory by label.
+   */
+  protected function SetPeakMemory($label = NULL) {
+    $label = $label ? $label . '_peak_memory' : 'GetPeakMemory';
+    $this->$label = memory_get_peak_usage();
   }
 
   /**
@@ -83,6 +114,8 @@ class AppGati {
   public function Step($label = NULL, $format = NULL) {
     $this->SetTime($label);
     $this->SetUsage($label, $format);
+    $this->SetMemory($label);
+    $this->SetPeakMemory($label);
   }
 
   /**
@@ -106,6 +139,25 @@ class AppGati {
   }
 
   /**
+   * Get memory usage difference.
+   */
+  protected function MemoryDiff($plabel, $slabel) {
+    // Get values.
+    $plabel = $plabel . '_memory';
+    $slabel = $slabel . '_memory';
+    // Return value in MB.
+    return ($this->$slabel - $this->$plabel)/1024/1024;
+  }
+
+  /**
+   * Get memory peak usage.
+   */
+  protected function GetPeakMemory($label) {
+    $label = $label . '_peak_memory';
+    return $this->$label/1024/1024;
+  }
+
+  /**
    * Get stats.
    * @param
    *  $plabel: Primary label. Should be set prior to secondary label.
@@ -117,10 +169,14 @@ class AppGati {
       $time = $usage = NULL;
       $time = $this->TimeDiff($plabel, $slabel);
       $usage = $this->UsageDiff($plabel, $slabel);
+      $memory = $this->MemoryDiff($plabel, $slabel);
+      $peak_memory = $this->GetPeakMemory($slabel);
 
       return array(
           'time' => $time,
           'usage' => $usage,
+          'memory' => $memory,
+          'peak_memory' => $peak_memory,
         );
     }
     catch(Exception $e) {
@@ -138,13 +194,21 @@ class AppGati {
   public function Report($plabel, $slabel) {
     try {
       $array = array();
+      // Get server load in last minute.
+      $load = $this->ServerLoad();
       // Get results.
       $results = $this->CheckGati($plabel, $slabel);
       // Prepare array.
-      $array['Clock time'] = $results['time'];
-      $array['Time taken in User Mode'] = $results['usage']['ru_utime.tv'];
-      $array['Time taken in System Mode'] = $results['usage']['ru_stime.tv'];
-      $array['Maximum resident shared size'] = $results['usage']['ru_maxrss'];
+      $array['Clock time in seconds'] = $results['time'];
+      $array['Time taken in User Mode in seconds'] = $results['usage']['ru_utime.tv'];
+      $array['Time taken in System Mode in seconds'] = $results['usage']['ru_stime.tv'];
+      $array['Total time taken in Kernel in seconds'] = 
+            $results['usage']['ru_stime.tv'] + $results['usage']['ru_utime.tv'];
+      $array['Memory limit in MB'] = str_replace('M', '', ini_get('memory_limit'));
+      $array['Memory usage in MB'] = $results['memory'];
+      $array['Peak memory usage in MB'] = $results['peak_memory'];
+      $array['Average server load in last minute'] = $load['0'];
+      $array['Maximum resident shared size in KB'] = $results['usage']['ru_maxrss'];
       $array['Integral shared memory size'] = $results['usage']['ru_ixrss'];
       $array['Integral unshared data size'] = $results['usage']['ru_idrss'];
       $array['Integral unshared stack size'] = $results['usage']['ru_isrss'];
