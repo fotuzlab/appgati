@@ -73,6 +73,59 @@ Usage
     print_r($report1);
     print_r($report2);
 
+Outputs:
+
+    Array
+    (
+        [Clock time in seconds] => 1.9502429962158
+        [Time taken in User Mode in seconds] => 0.632039
+        [Time taken in System Mode in seconds] => 0.024001
+        [Total time taken in Kernel in seconds] => 0.65604
+        [Memory limit in MB] => 128
+        [Memory usage in MB] => 18.237907409668
+        [Peak memory usage in MB] => 19.579357147217
+        [Average server load in last minute] => 0.47
+        [Maximum resident shared size in KB] => 44900
+        [Integral shared memory size] => 0
+        [Integral unshared data size] => 0
+        [Integral unshared stack size] => 
+        [Number of page reclaims] => 12102
+        [Number of page faults] => 6
+        [Number of block input operations] => 192
+        [Number of block output operations] => 
+        [Number of messages sent] => 0
+        [Number of messages received] => 0
+        [Number of signals received] => 0
+        [Number of voluntary context switches] => 606
+        [Number of involuntary context switches] => 99
+    )
+    
+    Array
+    (
+        [Clock time in seconds] => 0.30258512496948
+        [Time taken in User Mode in seconds] => 0.068004
+        [Time taken in System Mode in seconds] => 0.012
+        [Total time taken in Kernel in seconds] => 0.080004
+        [Memory limit in MB] => 128
+        [Memory usage in MB] => 3.9967918395996
+        [Peak memory usage in MB] => 4.3335151672363
+        [Average server load in last minute] => 0.47
+        [Maximum resident shared size in KB] => 21040
+        [Integral shared memory size] => 0
+        [Integral unshared data size] => 0
+        [Integral unshared stack size] => 
+        [Number of page reclaims] => 5454
+        [Number of page faults] => 0
+        [Number of block input operations] => 0
+        [Number of block output operations] => 
+        [Number of messages sent] => 0
+        [Number of messages received] => 0
+        [Number of signals received] => 0
+        [Number of voluntary context switches] => 51
+        [Number of involuntary context switches] => 10
+    )
+
+
 What else?
 ==========
 
