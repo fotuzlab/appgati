@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Appgati by fotuzlab</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Appgati</h1>
+        <p class="header">Script to gauge PHP application's performance.</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/fotuzlab/appgati/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/fotuzlab/appgati/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/fotuzlab/appgati">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/fotuzlab">fotuzlab</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a name="appgati" class="anchor" href="#appgati"><span class="octicon octicon-link"></span></a>appgati</h1>
+
+<p>Script to gauge PHP application's performance.</p>
+
+<h1>
+<a name="what-is-appgati" class="anchor" href="#what-is-appgati"><span class="octicon octicon-link"></span></a>What is appgati?</h1>
+
+<p>This script provides an array of following insights about your code:</p>
+
+<pre><code>Array
+(
+    [Clock time in seconds] =&gt; 1.9502429962158
+    [Time taken in User Mode in seconds] =&gt; 0.632039
+    [Time taken in System Mode in seconds] =&gt; 0.024001
+    [Total time taken in Kernel in seconds] =&gt; 0.65604
+    [Memory limit in MB] =&gt; 128
+    [Memory usage in MB] =&gt; 18.237907409668
+    [Peak memory usage in MB] =&gt; 19.579357147217
+    [Average server load in last minute] =&gt; 0.47
+    [Maximum resident shared size in KB] =&gt; 44900
+    [Integral shared memory size] =&gt; 0
+    [Integral unshared data size] =&gt; 0
+    [Integral unshared stack size] =&gt; 
+    [Number of page reclaims] =&gt; 12102
+    [Number of page faults] =&gt; 6
+    [Number of block input operations] =&gt; 192
+    [Number of block output operations] =&gt; 
+    [Number of messages sent] =&gt; 0
+    [Number of messages received] =&gt; 0
+    [Number of signals received] =&gt; 0
+    [Number of voluntary context switches] =&gt; 606
+    [Number of involuntary context switches] =&gt; 99
+)
+</code></pre>
+
+<h1>
+<a name="why-appgati" class="anchor" href="#why-appgati"><span class="octicon octicon-link"></span></a>Why appgati?</h1>
+
+<p>It uses simple PHP functions like memory_get_usage(), getrusage() etc and does some minor calculations for the developer.
+Appgati allows the developer to define steps in the code and generate a report between the two steps which saves time, effort and provides a clean implementation.</p>
+
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
+
+<pre><code>// Add appgati.
+
+require_once 'appgati.class.php';
+
+// Initialize
+$app = new AppGati();
+
+// Add step.
+// A step should be a continous string.
+$app-&gt;Step('1');
+
+// Do some code...
+
+// Add another step.
+$app-&gt;Step('2');
+
+// Do some code...
+
+// Add another step.
+$app-&gt;Step('3');
+
+// Generate report between steps 1 and 2.
+// Input the steps sequentially as strings for correct reports.
+$report1 = $app-&gt;Report('1', '2');
+// Generate report between steps 2 and 3.
+$report2 = $app-&gt;Report('2', '3');
+
+// Print reports.
+print_r($report1);
+print_r($report2);
+</code></pre>
+
+<p>Outputs:</p>
+
+<pre><code>Array
+(
+    [Clock time in seconds] =&gt; 1.9502429962158
+    [Time taken in User Mode in seconds] =&gt; 0.632039
+    [Time taken in System Mode in seconds] =&gt; 0.024001
+    [Total time taken in Kernel in seconds] =&gt; 0.65604
+    [Memory limit in MB] =&gt; 128
+    [Memory usage in MB] =&gt; 18.237907409668
+    [Peak memory usage in MB] =&gt; 19.579357147217
+    [Average server load in last minute] =&gt; 0.47
+    [Maximum resident shared size in KB] =&gt; 44900
+    [Integral shared memory size] =&gt; 0
+    [Integral unshared data size] =&gt; 0
+    [Integral unshared stack size] =&gt; 
+    [Number of page reclaims] =&gt; 12102
+    [Number of page faults] =&gt; 6
+    [Number of block input operations] =&gt; 192
+    [Number of block output operations] =&gt; 
+    [Number of messages sent] =&gt; 0
+    [Number of messages received] =&gt; 0
+    [Number of signals received] =&gt; 0
+    [Number of voluntary context switches] =&gt; 606
+    [Number of involuntary context switches] =&gt; 99
+)
+
+Array
+(
+    [Clock time in seconds] =&gt; 0.30258512496948
+    [Time taken in User Mode in seconds] =&gt; 0.068004
+    [Time taken in System Mode in seconds] =&gt; 0.012
+    [Total time taken in Kernel in seconds] =&gt; 0.080004
+    [Memory limit in MB] =&gt; 128
+    [Memory usage in MB] =&gt; 3.9967918395996
+    [Peak memory usage in MB] =&gt; 4.3335151672363
+    [Average server load in last minute] =&gt; 0.47
+    [Maximum resident shared size in KB] =&gt; 21040
+    [Integral shared memory size] =&gt; 0
+    [Integral unshared data size] =&gt; 0
+    [Integral unshared stack size] =&gt; 
+    [Number of page reclaims] =&gt; 5454
+    [Number of page faults] =&gt; 0
+    [Number of block input operations] =&gt; 0
+    [Number of block output operations] =&gt; 
+    [Number of messages sent] =&gt; 0
+    [Number of messages received] =&gt; 0
+    [Number of signals received] =&gt; 0
+    [Number of voluntary context switches] =&gt; 51
+    [Number of involuntary context switches] =&gt; 10
+)
+</code></pre>
+
+<h1>
+<a name="what-else" class="anchor" href="#what-else"><span class="octicon octicon-link"></span></a>What else?</h1>
+
+<p>Appgati also provides following methods:</p>
+
+<ol>
+<li>
+<p>setFormat('format')</p>
+
+<p>Sets output format for Usage(). Valid parameters are array(default), string and json.</p>
+</li>
+<li>
+<p>Time()</p>
+
+<p>Returns time in microseconds.</p>
+</li>
+<li>
+<p>Memory()</p>
+
+<p>Returns current memory usage.</p>
+</li>
+<li>
+<p>ServerLoad()</p>
+
+<p>Returns average server load in last 1, 5 and 15 minutes.</p>
+</li>
+<li>
+<p>Usage()</p>
+
+<p>Returns output of getrusage(). <a href="http://linux.die.net/man/2/getrusage">http://linux.die.net/man/2/getrusage</a></p>
+</li>
+<li>
+<p>Step('label')</p>
+
+<p>Adds a step or a checkpoint to generate reports. Input a continous string as label.</p>
+</li>
+<li>
+<p>CheckGati('step1', 'step2')</p>
+
+<p>Returns values of Time(), Memory(), Usage(), memory_get_peak_usage() between two steps with their raw keys.</p>
+</li>
+<li>
+<p>Report('step1', 'step2')</p>
+
+<p>Same as CheckGati() but returns output with more readable keys.</p>
+</li>
+</ol><h1>
+<a name="important" class="anchor" href="#important"><span class="octicon octicon-link"></span></a>Important</h1>
+
+<p>This script is purely for development purpose and should not be included in production.</p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
