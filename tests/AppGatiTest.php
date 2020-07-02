@@ -28,4 +28,13 @@ class AppGatiTest extends TestCase
         $this->assertIsArray($array);
         $this->assertIsString($string);
     }
+
+    public function testAddsStep()
+    {
+        $app = new AppGati;
+
+        $app->step('test');
+
+        $this->assertObjectHasAttribute('test', $app);
+    }
 }
