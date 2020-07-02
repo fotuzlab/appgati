@@ -12,7 +12,7 @@ class AppGatiTest extends TestCase
         $app = new AppGati;
 
         $expected = \microtime(true);
-        $actual = $app->time();
+        $actual = $app->getTime();
 
         $this->assertIsNumeric($actual);
         $this->assertGreaterThanOrEqual($expected, $actual);
@@ -22,8 +22,8 @@ class AppGatiTest extends TestCase
     {
         $app = new AppGati;
 
-        $array = $app->usage('array');
-        $string = $app->usage('string');
+        $array = $app->getUsage('array');
+        $string = $app->getUsage('string');
 
         $this->assertIsArray($array);
         $this->assertIsString($string);
