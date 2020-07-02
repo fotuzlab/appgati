@@ -1,0 +1,15 @@
+{
+    "name": "subiabre/appgati",
+    "description": "Package to gauge PHP app's performance. Based on original appgati.",
+    "require-dev": {
+        "phpunit/phpunit": "^9.2"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Facu",
+            "email": "subiabrewd@gmail.com"
+        }
+    ],
+    "require": {}
+}
