@@ -35,6 +35,9 @@ class AppGatiTest extends TestCase
 
         $app->step('test');
 
-        $this->assertObjectHasAttribute('test', $app);
+        $this->assertObjectHasAttribute('test_time', $app);
+        $this->assertObjectHasAttribute('test_usage', $app);
+        $this->assertObjectHasAttribute('test_memory', $app);
+        $this->assertObjectHasAttribute('test_peak_memory', $app);
     }
 }
