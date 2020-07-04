@@ -40,4 +40,27 @@ class AppGatiTest extends TestCase
         $this->assertObjectHasAttribute('test_memory', $app);
         $this->assertObjectHasAttribute('test_peak_memory', $app);
     }
+
+    public function testStep1And2AreDifferent()
+    {
+        $app = new AppGati;
+
+        $test1 = $app->step('test1');
+
+        \random_int(0, 100);
+
+        $test2 = $app->step('test2');
+
+        $this->assertIsArray($test1);
+        $this->assertIsArray($test2);
+
+        $this->assertArrayHasKey('time', $test1);
+        $this->assertArrayHasKey('memory', $test1);
+        $this->assertArrayHasKey('peak_memory', $test1);
+
+
+        $this->assertArrayHasKey('time', $test2);
+        $this->assertArrayHasKey('memory', $test2);
+        $this->assertArrayHasKey('peak_memory', $test2);
+    }
 }
