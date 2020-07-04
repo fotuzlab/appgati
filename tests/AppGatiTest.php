@@ -3,6 +3,7 @@
 namespace Tests;
 
 use AppGati;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class AppGatiTest extends TestCase
@@ -18,27 +19,25 @@ class AppGatiTest extends TestCase
         $this->assertGreaterThanOrEqual($expected, $actual);
     }
 
-    public function testGivesUsageByFormat()
-    {
-        $app = new AppGati;
-
-        $array = $app->getUsage('array');
-        $string = $app->getUsage('string');
-
-        $this->assertIsArray($array);
-        $this->assertIsString($string);
-    }
-
     public function testAddsStep()
     {
         $app = new AppGati;
 
         $app->step('test');
+        $steps = $app->getSteps();
 
-        $this->assertObjectHasAttribute('test_time', $app);
-        $this->assertObjectHasAttribute('test_usage', $app);
-        $this->assertObjectHasAttribute('test_memory', $app);
-        $this->assertObjectHasAttribute('test_peak_memory', $app);
+        $this->assertObjectHasAttribute('steps', $app);
+        $this->assertArrayHasKey('test', $steps);
+    }
+
+    public function testAddStepException()
+    {
+        $app = new AppGati;
+
+        $this->expectException(Exception::class);
+
+        $app->step('test');
+        $app->step('test');
     }
 
     public function testStep1And2AreDifferent()
