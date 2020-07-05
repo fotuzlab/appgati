@@ -131,14 +131,16 @@ class AppGati
         $arr2['ru_stime.tv'] = ($arr2['ru_stime.tv_usec'] / 1000000) + $arr2['ru_stime.tv_sec'];
 
         // Unset time splits.
-        unset($arr1['ru_utime.tv_usec'],
-        $arr1['ru_utime.tv_sec'],
-        $arr2['ru_utime.tv_usec'],
-        $arr2['ru_utime.tv_sec'],
-        $arr1['ru_stime.tv_usec'],
-        $arr1['ru_stime.tv_sec'],
-        $arr2['ru_stime.tv_usec'],
-        $arr2['ru_stime.tv_sec']);
+        unset(
+            $arr1['ru_utime.tv_usec'],
+            $arr1['ru_utime.tv_sec'],
+            $arr2['ru_utime.tv_usec'],
+            $arr2['ru_utime.tv_sec'],
+            $arr1['ru_stime.tv_usec'],
+            $arr1['ru_stime.tv_sec'],
+            $arr2['ru_stime.tv_usec'],
+            $arr2['ru_stime.tv_sec']
+        );
 
         // Iterate over values.
         foreach ($arr1 as $key => $value) {
