@@ -114,7 +114,7 @@ class AppGati
   /**
    * Get the usage difference between two steps
    * @param string $primaryLabel Label to measure usage against
-   * @param string $secondaryLabel Label to compare usage agaisnt primary
+   * @param string $secondaryLabel Label to compare usage against primary
    * @return array Usage array with times compared
    */
   public function getUsageDifference(string $primaryLabel, string $secondaryLabel): array
