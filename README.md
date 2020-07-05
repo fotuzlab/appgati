@@ -4,7 +4,7 @@ Based on the original [AppGati](https://github.com/fotuzlab/appgati), refactored
 
 ## Installation
 ```console
-composer require --dev subiabre/appgati
+$ composer require --dev subiabre/appgati
 ```
 
 ## Usage
@@ -12,6 +12,8 @@ AppGati allows you to easily gauge the performance of PHP script's.
 
 ```php
 <?php
+
+include 'vendor/autoload';
 
 $app = new AppGati;
 
