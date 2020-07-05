@@ -122,6 +122,6 @@ class AppGatiTest extends TestCase
         $this->assertIsNumeric($usage['ru_utime.tv']);
         $this->assertIsNumeric($usage['ru_stime.tv']);
 
-        $this->assertGreaterThanOrEqual($usage['ru_stime.tv'], $usage['ru_utime.tv']);
+        $this->assertGreaterThanOrEqual($usage['ru_utime.tv'], $usage['ru_stime.tv']);
     }
 }
