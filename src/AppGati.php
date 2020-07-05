@@ -175,11 +175,11 @@ class AppGati
         $report['Total time taken in Kernel in seconds'] = $usage['ru_stime.tv'] + $usage['ru_utime.tv'];
         
         $report['Memory limit in MB'] = str_replace('M', '', ini_get('memory_limit'));
-        $report['Memory usage in MB'] = $memory ?? 'Not Available';
-        $report['Peak memory usage in MB'] = $memoryPeak ?? 'Not Available';
+        $report['Memory usage in MB'] = $memory / 1024 / 1024 ?? 'Not Available';
+        $report['Peak memory usage in MB'] = $memoryPeak / 1024 / 1024 ?? 'Not Available';
         
         //$report['Average server load in last minute'] = $load['0'];
-        $report['Maximum resident shared size in KB'] = $usage]['ru_maxrss'] ?? 'Not Available';
+        $report['Maximum resident shared size in KB'] = $usage['ru_maxrss'] ?? 'Not Available';
         $report['Integral shared memory size'] = $usage['ru_ixrss'] ?? 'Not Available';
         $report['Integral unshared data size'] = $usage['ru_idrss'] ?? 'Not Available';
         $report['Integral unshared stack size'] = $usage['ru_isrss'] ?? 'Not Available';
