@@ -149,4 +149,50 @@ class AppGati
 
         return $array;
     }
+
+    /**
+     * Obtain a report array with the measures between two steps
+     * @param string $primaryLabel Initial step
+     * @param string $secondaryLabel End step
+     * @return array
+     */
+    public function getReport(string $primaryLabel, string $secondaryLabel): array
+    {
+        $report = [];
+
+        // Get server load in last minute.
+        //$load = $this->getServerLoad();
+
+        $time = $this->getTimeDifference($primaryLabel, $secondaryLabel);
+        $usage = $this->getUsageDifference($primaryLabel, $secondaryLabel);
+        $memory = $this->getMemoryDifference($primaryLabel, $secondaryLabel);
+        $memoryPeak = $this->getMemoryPeak();
+        
+        // Prepare report.
+        $report['Clock time in seconds'] = $time;
+        $report['Time taken in User Mode in seconds'] = $usage['ru_utime.tv'] ?? 'Not Available';
+        $report['Time taken in System Mode in seconds'] = $usage['ru_stime.tv'] ?? 'Not Available';
+        $report['Total time taken in Kernel in seconds'] = $usage['ru_stime.tv'] + $usage['ru_utime.tv'];
+        
+        $report['Memory limit in MB'] = str_replace('M', '', ini_get('memory_limit'));
+        $report['Memory usage in MB'] = $memory ?? 'Not Available';
+        $report['Peak memory usage in MB'] = $memoryPeak ?? 'Not Available';
+        
+        //$report['Average server load in last minute'] = $load['0'];
+        $report['Maximum resident shared size in KB'] = $usage]['ru_maxrss'] ?? 'Not Available';
+        $report['Integral shared memory size'] = $usage['ru_ixrss'] ?? 'Not Available';
+        $report['Integral unshared data size'] = $usage['ru_idrss'] ?? 'Not Available';
+        $report['Integral unshared stack size'] = $usage['ru_isrss'] ?? 'Not Available';
+        $report['Number of page reclaims'] = $usage['ru_minflt'] ?? 'Not Available';
+        $report['Number of page faults'] = $usage['ru_majflt'] ?? 'Not Available';
+        $report['Number of block input operations'] = $usage['ru_inblock'] ?? 'Not Available';
+        $report['Number of block output operations'] = $usage['ru_outblock'] ?? 'Not Available';
+        $report['Number of messages sent'] = $usage['ru_msgsnd'] ?? 'Not Available';
+        $report['Number of messages received'] = $usage['ru_msgrcv'] ?? 'Not Available';
+        $report['Number of signals received'] = $usage['ru_nsignals'] ?? 'Not Available';
+        $report['Number of voluntary context switches'] = $usage['ru_nvcsw'] ?? 'Not Available';
+        $report['Number of involuntary context switches'] = $usage['ru_nivcsw'] ?? 'Not Available';
+
+        return $report;
+    }
 }
