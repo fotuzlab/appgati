@@ -41,7 +41,16 @@ class AppGati
    */
   public function getMemoryPeak(): int
   {
-    return \memory_get_peak_usage(true);
+    return \memory_get_peak_usage();
+  }
+
+  /**
+   * Get the usage array given by `getrusage`
+   * @return array
+   */
+  public function getUsage(): array
+  {
+    return \getrusage();
   }
 
   /**
@@ -61,7 +70,8 @@ class AppGati
     $step = [
       'time' => $this->getTime(),
       'memory' => $this->getMemory(),
-      'peak_memory' => $this->getMemoryPeak()
+      'peak_memory' => $this->getMemoryPeak(),
+      'usage' => $this->getUsage()
     ];
 
     $this->steps[$label] = $step;
@@ -100,5 +110,44 @@ class AppGati
     $memoryDiff = $this->steps[$secondaryLabel]['memory'] - $this->steps[$primaryLabel]['memory'];
 
     return $memoryDiff;
+  }
+
+  /**
+   * Get the usage difference between two steps
+   * @param string $primaryLabel Label to measure usage against
+   * @param string $secondaryLabel Label to compare usage agaisnt primary
+   * @return array Usage array with times compared
+   */
+  public function getUsageDifference(string $primaryLabel, string $secondaryLabel): array
+  {
+      $arr1 = $this->steps[$primaryLabel]['usage'];
+      $arr2 = $this->steps[$secondaryLabel]['usage'];
+      
+      // Add user mode time.
+      $arr1['ru_utime.tv'] = ($arr1['ru_utime.tv_usec'] / 1000000) + $arr1['ru_utime.tv_sec'];
+      $arr2['ru_utime.tv'] = ($arr2['ru_utime.tv_usec'] / 1000000) + $arr2['ru_utime.tv_sec'];
+      
+      // Add system mode time.
+      $arr1['ru_stime.tv'] = ($arr1['ru_stime.tv_usec'] / 1000000) + $arr1['ru_stime.tv_sec'];
+      $arr2['ru_stime.tv'] = ($arr2['ru_stime.tv_usec'] / 1000000) + $arr2['ru_stime.tv_sec'];
+
+      // Unset time splits.
+      unset(
+        $arr1['ru_utime.tv_usec'], 
+        $arr1['ru_utime.tv_sec'], 
+        $arr2['ru_utime.tv_usec'], 
+        $arr2['ru_utime.tv_sec'], 
+        $arr1['ru_stime.tv_usec'], 
+        $arr1['ru_stime.tv_sec'], 
+        $arr2['ru_stime.tv_usec'], 
+        $arr2['ru_stime.tv_sec']
+      );
+
+      // Iterate over values.
+      foreach ($arr1 as $key => $value) {
+          $array[$key] = $arr2[$key] - $arr1[$key];
+      }
+
+      return $array;
   }
 }
