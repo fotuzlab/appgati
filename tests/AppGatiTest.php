@@ -124,4 +124,30 @@ class AppGatiTest extends TestCase
 
         $this->assertGreaterThanOrEqual($usage['ru_utime.tv'], $usage['ru_stime.tv']);
     }
+
+    public function testGetReportHasMemoryInMB()
+    {
+        $app = new AppGati;
+
+        $app->step('start');
+
+        for ($i=0; $i < 1000; $i++) { 
+            \random_int(100, 999);
+        }
+
+        $app->step('end');
+
+        $report = $app->getReport('start', 'end');
+
+        $this->assertArrayHasKey('Memory limit in MB', $report);
+        $this->assertArrayHasKey('Memory usage in MB', $report);
+        $this->assertArrayHasKey('Peak memory usage in MB', $report);
+
+        $this->assertIsNumeric($report['Memory limit in MB']);
+        $this->assertIsNumeric($report['Memory usage in MB']);
+        $this->assertIsNumeric($report['Peak memory usage in MB']);
+
+        $this->assertLessThan($app->getMemory(), $report['Memory usage in MB']);
+        $this->assertLessThan($app->getMemoryPeak(), $report['Peak memory usage in MB']);
+    }
 }
