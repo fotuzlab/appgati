@@ -61,8 +61,7 @@ class AppGati
    */
   public function step(string $label): ?array
   {
-    if (\array_key_exists($label, $this->steps))
-    {
+    if (\array_key_exists($label, $this->steps)) {
       throw new Exception(self::EXISTING_STEP_EXCEPTION, 1);
       return null;
     }
@@ -120,34 +119,34 @@ class AppGati
    */
   public function getUsageDifference(string $primaryLabel, string $secondaryLabel): array
   {
-      $arr1 = $this->steps[$primaryLabel]['usage'];
-      $arr2 = $this->steps[$secondaryLabel]['usage'];
-      
-      // Add user mode time.
-      $arr1['ru_utime.tv'] = ($arr1['ru_utime.tv_usec'] / 1000000) + $arr1['ru_utime.tv_sec'];
-      $arr2['ru_utime.tv'] = ($arr2['ru_utime.tv_usec'] / 1000000) + $arr2['ru_utime.tv_sec'];
-      
-      // Add system mode time.
-      $arr1['ru_stime.tv'] = ($arr1['ru_stime.tv_usec'] / 1000000) + $arr1['ru_stime.tv_sec'];
-      $arr2['ru_stime.tv'] = ($arr2['ru_stime.tv_usec'] / 1000000) + $arr2['ru_stime.tv_sec'];
+    $arr1 = $this->steps[$primaryLabel]['usage'];
+    $arr2 = $this->steps[$secondaryLabel]['usage'];
 
-      // Unset time splits.
-      unset(
-        $arr1['ru_utime.tv_usec'], 
-        $arr1['ru_utime.tv_sec'], 
-        $arr2['ru_utime.tv_usec'], 
-        $arr2['ru_utime.tv_sec'], 
-        $arr1['ru_stime.tv_usec'], 
-        $arr1['ru_stime.tv_sec'], 
-        $arr2['ru_stime.tv_usec'], 
-        $arr2['ru_stime.tv_sec']
-      );
+    // Add user mode time.
+    $arr1['ru_utime.tv'] = ($arr1['ru_utime.tv_usec'] / 1000000) + $arr1['ru_utime.tv_sec'];
+    $arr2['ru_utime.tv'] = ($arr2['ru_utime.tv_usec'] / 1000000) + $arr2['ru_utime.tv_sec'];
 
-      // Iterate over values.
-      foreach ($arr1 as $key => $value) {
-          $array[$key] = $arr2[$key] - $arr1[$key];
-      }
+    // Add system mode time.
+    $arr1['ru_stime.tv'] = ($arr1['ru_stime.tv_usec'] / 1000000) + $arr1['ru_stime.tv_sec'];
+    $arr2['ru_stime.tv'] = ($arr2['ru_stime.tv_usec'] / 1000000) + $arr2['ru_stime.tv_sec'];
 
-      return $array;
+    // Unset time splits.
+    unset(
+      $arr1['ru_utime.tv_usec'],
+      $arr1['ru_utime.tv_sec'],
+      $arr2['ru_utime.tv_usec'],
+      $arr2['ru_utime.tv_sec'],
+      $arr1['ru_stime.tv_usec'],
+      $arr1['ru_stime.tv_sec'],
+      $arr2['ru_stime.tv_usec'],
+      $arr2['ru_stime.tv_sec']
+    );
+
+    // Iterate over values.
+    foreach ($arr1 as $key => $value) {
+      $array[$key] = $arr2[$key] - $arr1[$key];
+    }
+
+    return $array;
   }
 }
