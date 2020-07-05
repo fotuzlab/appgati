@@ -98,4 +98,30 @@ class AppGatiTest extends TestCase
         $this->assertIsNumeric($memory);
         $this->assertGreaterThanOrEqual(1, $memory);
     }
+
+    public function testGetsUsageDifference()
+    {
+        $app = new AppGati;
+
+        $app->step('test1');
+
+        for ($i=0; $i < 1000; $i++) { 
+            \random_int(100, 999);
+            \usleep(1);
+        }
+
+        $app->step('test2');
+
+        $usage = $app->getUsageDifference('test1', 'test2');
+
+        $this->assertIsArray($usage);
+
+        $this->assertArrayHasKey('ru_utime.tv', $usage);
+        $this->assertArrayHasKey('ru_stime.tv', $usage);
+
+        $this->assertIsNumeric($usage['ru_utime.tv']);
+        $this->assertIsNumeric($usage['ru_stime.tv']);
+
+        $this->assertGreaterThanOrEqual($usage['ru_stime.tv'], $usage['ru_utime.tv']);
+    }
 }
